@@ -47,7 +47,8 @@ export class SolarSystem {
             assetUrl: 'assets/2k_mercury.jpg',
             MaterialType: MeshPhongMaterial
         })
-        this.mercury.position.x = 10;
+        this.mercury.position.x = 15;
+        this.mercuryOrbitNode.rotation.y = 1.0;
         this.mercuryOrbitNode.add(this.mercury);
         this.earthOrbitNode = new Object3D();
 
@@ -63,13 +64,14 @@ export class SolarSystem {
             normalMapUrl: 'assets/2k_earth_normal_map.png'
         });
 
-        this.earth.position.x = 15;
+        this.earth.position.x = 25;
+        this.earthOrbitNode.rotation.y   = 2.5;
 
         this.earthOrbitNode.add(this.earth);
 
         this.moonOrbitNode = new Object3D();
         this.earthOrbitNode.add(this.moonOrbitNode);
-        this.moonOrbitNode.position.x=15;
+        this.moonOrbitNode.position.x=25;
         this.moon = this.createSphericalBody({
             radius: sunRadius * 0.1, widthSegments, heightSegments,
             shininess: 3,
@@ -89,7 +91,8 @@ export class SolarSystem {
             assetUrl: 'assets/2k_mars.jpg',
             MaterialType: MeshPhongMaterial
         });
-        this.mars.position.x = 21;
+        this.mars.position.x = 31;
+        this.marsOrbitNode.rotation.y    = 4.0;
         this.marsOrbitNode.add(this.mars);
 
         this.jupiterOrbitNode = new Object3D();
@@ -100,7 +103,8 @@ export class SolarSystem {
             assetUrl: 'assets/2k_jupiter.jpg',
             MaterialType: MeshPhongMaterial
         });
-        this.jupiter.position.x=30;
+        this.jupiter.position.x=50;
+        this.jupiterOrbitNode.rotation.y = 5.5;
         this.jupiterOrbitNode.add(this.jupiter);
 
 
@@ -115,23 +119,23 @@ export class SolarSystem {
 
 
     animate() {
-        this.rotateObject(this.sun, [0, 0.005, 0]);
-        this.sun.material.uniforms.uTime.value += 0.01;
+        this.rotateObject(this.sun, [0, 0.002, 0]);
+        this.sun.material.uniforms.uTime.value += 0.005;
 
-        this.rotateObject(this.mercuryOrbitNode, [0, 0.01, 0]);
-        this.rotateObject(this.mercury, [0, 0.005, 0]);
+        this.rotateObject(this.mercuryOrbitNode, [0, 0.008, 0]);
+        this.rotateObject(this.mercury, [0, 0.002, 0]);
 
-        this.rotateObject(this.earthOrbitNode, [0, 0.01, 0]);
-        this.rotateObject(this.earth, [0, 0.005, 0]);
+        this.rotateObject(this.earthOrbitNode, [0, 0.004, 0]);
+        this.rotateObject(this.earth, [0, 0.008, 0]);
 
-        this.rotateObject(this.moonOrbitNode, [0, 0.01, 0]);
-        this.rotateObject(this.moon, [0, 0.01, 0]);
+        this.rotateObject(this.moonOrbitNode, [0, 0.02, 0]);
+        this.rotateObject(this.moon, [0, 0.005, 0]);
 
-        this.rotateObject(this.marsOrbitNode, [0, 0.01, 0]);
-        this.rotateObject(this.mars, [0, 0.01, 0]);
+        this.rotateObject(this.marsOrbitNode, [0, 0.001, 0]);
+        this.rotateObject(this.mars, [0, 0.008, 0]);
 
-        this.rotateObject(this.jupiterOrbitNode, [0, 0.01, 0]);
-        this.rotateObject(this.jupiter, [0, 0.01, 0]);
+        this.rotateObject(this.jupiterOrbitNode, [0, 0.0012, 0]);
+        this.rotateObject(this.jupiter, [0, 0.003, 0]);
     }
 
 

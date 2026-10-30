@@ -60,13 +60,17 @@ renderer.setAnimationLoop(render);
 
 function render(){
     solarSystem.animate();
-    const session = renderer.xr.getSession();   // null when not in VR
+    const session = renderer.xr.getSession();
     if (session) {
         for (const source of session.inputSources) {
-            if (!source.gamepad) continue;              // skip sources with no stick
-            const buttonY = source.gamepad.axes[3];      // up = -1, down = +1
-            if (Math.abs(buttonY) > 0.1) {               // deadzone
-                rig.position.z += buttonY * 0.1;         // up moves toward -z
+            if (!source.gamepad) continue;
+            const buttonY = source.gamepad.axes[3];
+            const buttonX = source.gamepad.axes[2];
+            if (Math.abs(buttonY) > 0.1) {
+                rig.position.z += buttonY * 0.1;
+            }
+            if (Math.abs(buttonX) > 0.1) {
+                rig.position.x += buttonX * 0.1;
             }
         }
     }
