@@ -2,7 +2,7 @@
 
 import {
     AmbientLight,
-    Color,
+    Color, HemisphereLight,
     Mesh,
     MeshBasicMaterial,
     MeshPhongMaterial,
@@ -32,7 +32,16 @@ export class SolarSystem {
         });
 
         this.centerOfSystem.add(this.sun)
-
+        this.mercuryOrbitNode= new Object3D();
+        this.centerOfSystem.add(this.mercuryOrbitNode);
+        this.mercury = this.createSphericalBody({
+            radius: sunRadius * 0.2, widthSegments, heightSegments,
+            shininess:3,
+            assetUrl: 'assets/2k_mercury.jpg',
+            MaterialType: MeshPhongMaterial
+        })
+        this.mercury.position.x = 10;
+        this.mercuryOrbitNode.add(this.mercury);
         this.earthOrbitNode = new Object3D();
 
         this.centerOfSystem.add(this.earthOrbitNode);
@@ -51,19 +60,70 @@ export class SolarSystem {
 
         this.earthOrbitNode.add(this.earth);
 
-        this.sunLight = new PointLight(0xFFFFFF, 3);
+        this.moonOrbitNode = new Object3D();
+        this.earthOrbitNode.add(this.moonOrbitNode);
+        this.moonOrbitNode.position.x=15;
+        this.moon = this.createSphericalBody({
+            radius: sunRadius * 0.1, widthSegments, heightSegments,
+            shininess: 3,
+            assetUrl: 'assets/2k_moon.jpg',
+            MaterialType: MeshPhongMaterial
+        });
+        this.moon.position.x = 5;
+        this.moonOrbitNode.add(this.moon);
+
+
+
+        this.marsOrbitNode = new Object3D();
+        this.centerOfSystem.add(this.marsOrbitNode);
+        this.mars = this.createSphericalBody({
+            radius: sunRadius * 0.4, widthSegments, heightSegments,
+            shininess:3,
+            assetUrl: 'assets/2k_mars.jpg',
+            MaterialType: MeshPhongMaterial
+        });
+        this.mars.position.x = 21;
+        this.marsOrbitNode.add(this.mars);
+
+        this.jupiterOrbitNode = new Object3D();
+        this.centerOfSystem.add(this.jupiterOrbitNode);
+        this.jupiter = this.createSphericalBody({
+            radius: sunRadius * 0.7, widthSegments, heightSegments,
+            shininess:3,
+            assetUrl: 'assets/2k_jupiter.jpg',
+            MaterialType: MeshPhongMaterial
+        });
+        this.jupiter.position.x=30;
+        this.jupiterOrbitNode.add(this.jupiter);
+
+
+
+        this.sunLight = new PointLight(0xFFFFFF, 2);
         this.sun.add(this.sunLight);
 
-        this.ambientLight = new AmbientLight(0xFFFFFF, 0.2);
+        this.hemisphereLight = new HemisphereLight(0xffffff, 0x222244, 0.6);
+        scene.add(this.hemisphereLight);
 
-        scene.add(this.ambientLight);
     }
 
 
     animate() {
         this.rotateObject(this.sun, [0, 0.005, 0]);
+
+        this.rotateObject(this.mercuryOrbitNode, [0, 0.01, 0]);
+        this.rotateObject(this.mercury, [0, 0.005, 0]);
+
         this.rotateObject(this.earthOrbitNode, [0, 0.01, 0]);
         this.rotateObject(this.earth, [0, 0.005, 0]);
+
+        this.rotateObject(this.moonOrbitNode, [0, 0.01, 0]);
+        this.rotateObject(this.moon, [0, 0.01, 0]);
+
+        this.rotateObject(this.marsOrbitNode, [0, 0.01, 0]);
+        this.rotateObject(this.mars, [0, 0.01, 0]);
+
+        this.rotateObject(this.jupiterOrbitNode, [0, 0.01, 0]);
+        this.rotateObject(this.jupiter, [0, 0.01, 0]);
     }
 
 
