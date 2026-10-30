@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-import {PerspectiveCamera, Scene, WebGLRenderer} from "../build/three.module.js";
+import {Group, PerspectiveCamera, Scene, WebGLRenderer} from "../build/three.module.js";
 import {SolarSystem} from "./SolarSystem.js";
 import {OrbitControls} from "../build/OrbitControls.js";
 import {VRButton} from "../build/VRButton.js";
@@ -11,7 +11,7 @@ const aspect = width / height;
 
 const fov = 75;
 const near = 0.1;
-const far = 100;
+const far = 500;
 
 const camera = new PerspectiveCamera(fov, aspect, near, far);
 // Flytter camera vekk fra sentrum, vil ikke ha noe effekt i VR
@@ -50,6 +50,9 @@ window.addEventListener('resize', () => {
 })
 
 const scene = new Scene();
+const rig = new Group();
+rig.add(camera);
+scene.add(rig);
 const solarSystem = new SolarSystem(scene);
 
 // Dette er kun hvis VR er i scenen
@@ -57,7 +60,16 @@ renderer.setAnimationLoop(render);
 
 function render(){
     solarSystem.animate();
-
+    const session = renderer.xr.getSession();   // null when not in VR
+    if (session) {
+        for (const source of session.inputSources) {
+            if (!source.gamepad) continue;              // skip sources with no stick
+            const buttonY = source.gamepad.axes[3];      // up = -1, down = +1
+            if (Math.abs(buttonY) > 0.1) {               // deadzone
+                rig.position.z += buttonY * 0.1;         // up moves toward -z
+            }
+        }
+    }
     renderer.render(scene, camera);
 
     // Hvis vi ikke har VR har vi denne

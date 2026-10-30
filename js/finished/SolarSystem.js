@@ -10,6 +10,7 @@ import {
     SphereGeometry,
     TextureLoader, Vector2
 } from "../build/three.module.js";
+import SunShader from "./SunShader.js";
 
 export class SolarSystem {
     constructor(scene) {
@@ -25,11 +26,17 @@ export class SolarSystem {
         
         scene.add(this.centerOfSystem);
 
-        this.sun = this.createSphericalBody({
-            radius: sunRadius, widthSegments, heightSegments,
-            assetUrl: 'assets/texture_sun.jpg',
-            MaterialType: MeshBasicMaterial
-        });
+        // this.sun = this.createSphericalBody({
+        //     radius: sunRadius, widthSegments, heightSegments,
+        //     assetUrl: 'assets/texture_sun.jpg',
+        //     MaterialType: MeshBasicMaterial
+        // });
+
+        this.sun = new Mesh(new SphereGeometry(sunRadius, widthSegments, heightSegments),
+            new SunShader({
+                mapInParameters:this.textureLoader.load('assets/texture_sun.jpg'),
+                colorInParameters: new Color(0xFFFFFF)
+            }));
 
         this.centerOfSystem.add(this.sun)
         this.mercuryOrbitNode= new Object3D();
@@ -109,6 +116,7 @@ export class SolarSystem {
 
     animate() {
         this.rotateObject(this.sun, [0, 0.005, 0]);
+        this.sun.material.uniforms.uTime.value += 0.01;
 
         this.rotateObject(this.mercuryOrbitNode, [0, 0.01, 0]);
         this.rotateObject(this.mercury, [0, 0.005, 0]);
